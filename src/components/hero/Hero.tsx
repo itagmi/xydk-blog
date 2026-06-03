@@ -1,45 +1,56 @@
-'use client'
+"use client";
 
-import { CornerWord } from './CornerWord'
-import { ParallaxLayer } from './ParallaxLayer'
-import { useHeroGsap } from './useHeroGsap'
-import { useHeroParallax } from './useHeroParallax'
+import Link from "next/link";
+import { Bricolage_Grotesque } from "next/font/google";
+import { CornerWord } from "./CornerWord";
+import { ParallaxLayer } from "./ParallaxLayer";
+import { useHeroGsap } from "./useHeroGsap";
+import { useHeroParallax } from "./useHeroParallax";
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["500"],
+});
 
 const CORNERS = [
   {
-    key: 'experience',
-    className: 'absolute top-[30%] left-[9%]',
+    key: "experience",
+    className: "absolute top-[30%] left-[9%]",
     fx: -28,
     fy: -18,
-    word: { pre: 'e', letter: 'X', post: 'perience' } as const,
+    href: "/about",
+    word: { pre: "e", letter: "X", post: "perience" } as const,
   },
   {
-    key: 'yourself',
-    className: 'absolute top-[30%] right-[9%] text-right',
+    key: "yourself",
+    className: "absolute top-[30%] right-[9%] text-right",
     fx: 28,
     fy: -22,
-    word: { letter: 'Y', post: 'ourself' } as const,
+    href: "/life",
+    word: { letter: "Y", post: "ourself" } as const,
   },
   {
-    key: 'developer',
-    className: 'absolute bottom-[30%] left-[9%]',
+    key: "developer",
+    className: "absolute bottom-[30%] left-[9%]",
     fx: -22,
     fy: 20,
-    word: { letter: 'D', post: 'eveloper' } as const,
+    href: "/development-note",
+    word: { letter: "D", post: "eveloper" } as const,
   },
   {
-    key: 'kinetics',
-    className: 'absolute bottom-[30%] right-[9%] text-right',
+    key: "kinetics",
+    className: "absolute bottom-[30%] right-[9%] text-right",
     fx: 24,
     fy: 18,
-    word: { letter: 'K', post: 'inetics' } as const,
+    href: "/ui-ux-thought",
+    word: { letter: "K", post: "inetics" } as const,
   },
-] as const
+] as const;
 
 export default function Hero() {
-  const { heroRef, x, y, onMouseMove, onMouseLeave } = useHeroParallax()
+  const { heroRef, x, y, onMouseMove, onMouseLeave } = useHeroParallax();
 
-  useHeroGsap(heroRef)
+  useHeroGsap(heroRef);
 
   return (
     <main
@@ -59,16 +70,23 @@ export default function Hero() {
             className={corner.className}
             marker="corner"
           >
-            <CornerWord {...corner.word} />
+            <Link
+              href={corner.href}
+              className="inline-block cursor-pointer no-underline opacity-75 transition-all duration-200 hover:scale-[1.03] hover:opacity-100 focus-visible:scale-[1.03] focus-visible:opacity-100"
+            >
+              <CornerWord {...corner.word} />
+            </Link>
           </ParallaxLayer>
         ))}
 
         <ParallaxLayer fx={6} fy={4} mx={x} my={y} marker="title">
-          <h1 className="m-0 pointer-events-none text-center font-serif text-[clamp(48px,5.5vw,80px)] font-normal leading-none tracking-[-0.01em] text-white/[0.93]">
+          <h1
+            className={`${bricolage.className} m-0 pointer-events-none text-center text-[clamp(48px,5.5vw,80px)] font-normal leading-none tracking-[0.01em] text-white/90`}
+          >
             What is XYDK?
           </h1>
         </ParallaxLayer>
       </div>
     </main>
-  )
+  );
 }

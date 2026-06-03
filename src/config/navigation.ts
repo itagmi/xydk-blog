@@ -4,9 +4,9 @@ export type NavItem = {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'About me', href: '/about' },
-  { label: 'Development note', href: '/development-note' },
-  { label: 'UI/UX thought', href: '/ui-ux-thought' },
+  { label: 'About', href: '/about' },
+  { label: 'Dev notes', href: '/development-note' },
+  { label: 'UI/UX', href: '/ui-ux-thought' },
   { label: 'Life', href: '/life' },
-  { label: 'Contact me', href: '/contact' },
+  { label: 'Contact', href: '/contact' },
 ]
