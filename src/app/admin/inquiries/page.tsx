@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
 import AdminPageShell from "@/components/admin/AdminPageShell";
 import { markInquiryRead } from "@/app/actions/inquiries";

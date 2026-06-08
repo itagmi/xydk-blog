@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
 import { logout } from "@/app/actions/auth";
 import { deletePost, togglePublish } from "@/app/actions/posts";
