@@ -1,18 +1,74 @@
 @import "tailwindcss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Dev Note markdown styles */
+.prose-dk { color: rgba(255,255,255,0.75); line-height: 1.75; }
+.prose-dk h1,.prose-dk h2,.prose-dk h3,.prose-dk h4 { color: rgba(255,255,255,0.9); font-weight: 500; margin-top: 1.75em; margin-bottom: 0.5em; }
+.prose-dk h1 { font-size: 1.75rem; }
+.prose-dk h2 { font-size: 1.35rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.35em; }
+.prose-dk h3 { font-size: 1.1rem; }
+.prose-dk p { margin-bottom: 1em; }
+.prose-dk a { color: rgba(255,255,255,0.85); text-decoration: underline; text-underline-offset: 3px; }
+.prose-dk code { background: rgba(255,255,255,0.07); padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.85em; color: rgba(255,255,255,0.85); }
+.prose-dk pre { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 1rem 1.25rem; overflow-x: auto; margin: 1.5em 0; border-radius: 2px; }
+.prose-dk pre code { background: none; padding: 0; font-size: 0.82em; color: rgba(255,255,255,0.8); }
+.prose-dk blockquote { border-left: 2px solid rgba(255,255,255,0.2); padding-left: 1rem; color: rgba(255,255,255,0.45); margin: 1.5em 0; }
+.prose-dk ul,.prose-dk ol { padding-left: 1.5rem; margin-bottom: 1em; }
+.prose-dk li { margin-bottom: 0.25em; }
+.prose-dk hr { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 2em 0; }
+.prose-dk table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin: 1.5em 0; }
+.prose-dk th { border-bottom: 1px solid rgba(255,255,255,0.2); padding: 0.5em 0.75em; text-align: left; color: rgba(255,255,255,0.6); font-weight: 500; text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.08em; }
+.prose-dk td { border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0.5em 0.75em; }
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    min-height: 100%;
+    background: #0c0c0c;
+  }
+
+  body {
+    min-height: 100%;
+    overflow-y: auto;
+    background: #0c0c0c;
+  }
 }
 
-html {
-  min-height: 100%;
-  background: #0c0c0c;
+button:not(:disabled),
+[type="button"]:not(:disabled),
+[type="submit"]:not(:disabled),
+[type="reset"]:not(:disabled),
+a {
+  cursor: pointer;
 }
 
-body {
-  min-height: 100%;
-  overflow-y: auto;
-  background: #0c0c0c;
+button:disabled,
+[type="button"]:disabled,
+[type="submit"]:disabled,
+[type="reset"]:disabled {
+  cursor: not-allowed;
+}
+
+@keyframes typewriter-cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 0.55ch;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+  animation: typewriter-cursor-blink 0.75s step-end infinite;
 }

@@ -72,9 +72,14 @@ export default function Hero() {
           >
             <Link
               href={corner.href}
-              className="inline-block cursor-pointer no-underline opacity-75 transition-all duration-200 hover:scale-[1.03] hover:opacity-100 focus-visible:scale-[1.03] focus-visible:opacity-100"
+              className="group inline-block cursor-pointer px-2 py-1 no-underline opacity-75 transition-opacity duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:opacity-100 focus-visible:opacity-100"
             >
-              <CornerWord {...corner.word} />
+              <CornerWord
+                {...corner.word}
+                align={
+                  corner.className.includes("text-right") ? "right" : "left"
+                }
+              />
             </Link>
           </ParallaxLayer>
         ))}

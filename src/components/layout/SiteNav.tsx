@@ -5,6 +5,25 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NAV_ITEMS } from "@/config/navigation";
 
+function HomeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z" />
+      <path d="M9 21V12h6v9" />
+    </svg>
+  );
+}
+
 export default function SiteNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -31,8 +50,19 @@ export default function SiteNav() {
       />
       <nav
         aria-label="Main"
-        className="pointer-events-auto fixed top-10 right-0 left-0 z-[100] flex justify-center gap-12 px-12"
+        className="pointer-events-auto fixed top-10 right-0 left-0 z-[100] flex items-center justify-center gap-12 px-12"
       >
+        <Link
+          href="/"
+          aria-label="Home"
+          className={`absolute left-12 transition-colors duration-[250ms] ${
+            pathname === "/"
+              ? "text-white/85"
+              : "text-white/40 hover:text-white/85"
+          }`}
+        >
+          <HomeIcon className="h-[18px] w-[18px]" />
+        </Link>
       {NAV_ITEMS.map(({ label, href }) => {
         const isActive = pathname === href;
 

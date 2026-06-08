@@ -31,7 +31,8 @@ export function ParallaxLayer({
       {...(marker === 'corner' ? { 'data-hero-corner': true } : {})}
       {...(marker === 'title' ? { 'data-hero-title': true } : {})}
     >
-      {children}
+      {/* GSAP 인트로는 내부만 — Framer transform과 분리 */}
+      <div data-hero-intro>{children}</div>
     </motion.div>
   )
 }

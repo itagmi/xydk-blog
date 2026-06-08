@@ -1,4 +1,13 @@
+"use client";
+
+import Image from "next/image";
+import { useRef } from "react";
 import { Bricolage_Grotesque } from "next/font/google";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -9,33 +18,53 @@ const ITEMS = [
   {
     key: "books",
     label: "책 읽기",
-    icon: "📚",
-    iconWrapperClassName:
-      "rounded-2xl border border-white/15 bg-white/[0.06] px-4 py-3 text-5xl",
+    image: "/1.png",
+    href: null,
     headline: "BOOKS THAT SOMEHOW ALWAYS FIND ME AT THE RIGHT TIME",
     subtitle: "왠지 항상 딱 맞는 타이밍에 읽게 되는 책들",
   },
   {
     key: "photos",
     label: "사진 찍고 인스타 올리기",
-    icon: "📷",
-    iconWrapperClassName:
-      "rounded-full border border-white/15 bg-white/[0.06] px-6 py-4 text-4xl",
+    image: "/2.png",
+    href: "https://www.instagram.com/xyoodakyung?igsh=YTJxeHJpNTd0bDBs&utm_source=qr",
     headline: "CHASING LIGHT AND MOMENTS WORTH KEEPING",
     subtitle: "간직할 만한 빛과 순간들을 쫓는 것",
   },
   {
     key: "reviews",
     label: "리뷰 인스타",
-    icon: "✍️",
-    iconWrapperClassName:
-      "rotate-2 rounded-md border border-white/20 bg-white/10 px-4 py-6 text-4xl shadow-[0_12px_40px_rgba(0,0,0,0.4)]",
+    image: "/3.png",
+    href: "https://www.instagram.com/ttomatto.zip/",
     headline: "SAYING WHAT I THINK SO YOU DON'T HAVE TO GUESS",
     subtitle: "내가 솔직하게 말해줄 테니 당신은 고민 안 해도 됨",
   },
 ] as const;
 
 export default function SideHustlesSection() {
+  const listRef = useRef<HTMLUListElement>(null);
+
+  useGSAP(
+    () => {
+      if (!listRef.current) return;
+      const items = listRef.current.querySelectorAll("li");
+
+      gsap.from(items, {
+        scrollTrigger: {
+          trigger: listRef.current,
+          start: "top 75%",
+          toggleActions: "play reverse play reverse",
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.15,
+      });
+    },
+    { scope: listRef },
+  );
+
   return (
     <div className="flex w-full max-w-[1200px] flex-col gap-16 md:gap-20">
       <header className="w-full">
@@ -46,11 +75,11 @@ export default function SideHustlesSection() {
         </h2>
       </header>
 
-      <div
-        id="side-hustles"
-        className="flex w-full flex-col items-center gap-14 text-center"
-      >
-        <ul className="flex w-full flex-col items-center gap-14 md:flex-row md:items-start md:justify-center md:gap-10 lg:gap-12">
+      <div className="flex w-full flex-col items-center gap-14 text-center">
+        <ul
+          ref={listRef}
+          className="flex w-full flex-col items-center gap-14 md:flex-row md:items-start md:justify-center md:gap-10 lg:gap-12"
+        >
           {ITEMS.map((item) => (
             <li
               key={item.key}
@@ -58,11 +87,32 @@ export default function SideHustlesSection() {
             >
               <article className="flex flex-col items-center gap-5">
                 <p className="text-sm text-white/40">{item.label}</p>
-                <div
-                  className={`inline-flex w-fit ${item.iconWrapperClassName}`}
-                >
-                  {item.icon}
-                </div>
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block overflow-hidden"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.label}
+                      width={280}
+                      height={280}
+                      className="h-[200px] w-[200px] object-cover transition-transform duration-500 ease-out hover:scale-105"
+                    />
+                  </a>
+                ) : (
+                  <div className="overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.label}
+                      width={280}
+                      height={280}
+                      className="h-[200px] w-[200px] object-cover"
+                    />
+                  </div>
+                )}
                 <p className="text-base leading-relaxed uppercase tracking-[0.06em] text-white/55 md:text-[15px]">
                   {item.headline}
                 </p>
