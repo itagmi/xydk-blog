@@ -63,10 +63,9 @@ function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
       <Image
         src={item.image}
         alt={item.label}
-        width={600}
-        height={600}
+        fill
         sizes="(max-width: 1024px) 80vw, 200px"
-        className={`h-full w-full object-cover ${item.href ? "transition-transform duration-500 ease-out group-hover:scale-105" : ""}`}
+        className={`object-cover ${item.href ? "transition-transform duration-500 ease-out group-hover:scale-105" : ""}`}
       />
       {item.href && (
         <>
