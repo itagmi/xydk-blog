@@ -58,7 +58,7 @@ function InstagramIcon({ className }: { className?: string }) {
 function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
   const image = (
     <div
-      className={`relative h-[200px] w-[200px] overflow-hidden ${item.href ? "group" : ""}`}
+      className={`relative h-[240px] w-full max-w-[280px] overflow-hidden lg:h-[200px] lg:w-[200px] ${item.href ? "group" : ""}`}
     >
       <Image
         src={item.image}
@@ -131,12 +131,12 @@ export default function SideHustlesSection() {
       <div className="flex w-full flex-col items-center gap-14 text-center">
         <ul
           ref={listRef}
-          className="flex w-full flex-col items-center gap-14 md:flex-row md:items-start md:justify-center md:gap-10 lg:gap-12"
+          className="flex w-full flex-col items-center gap-14 lg:flex-row lg:items-start lg:justify-center lg:gap-10"
         >
           {ITEMS.map((item) => (
             <li
               key={item.key}
-              className="w-full max-w-[34ch] md:w-[34ch] md:shrink-0"
+              className="w-full max-w-[360px] lg:w-[34ch] lg:shrink-0"
             >
               <article className="flex flex-col items-center gap-5">
                 <p className="text-sm text-white/40">{item.label}</p>
