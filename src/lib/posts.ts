@@ -23,3 +23,10 @@ export async function getPublishedUiuxPostBySlug(slug: string) {
     include: { tags: true },
   });
 }
+
+export async function incrementViews(slug: string) {
+  await prisma.post.updateMany({
+    where: { slug: decodeURIComponent(slug), published: true },
+    data: { views: { increment: 1 } },
+  });
+}

@@ -59,6 +59,7 @@ export default async function AdminPage({
                     {post.published ? "Live" : "Draft"}
                   </span>
                   <span className="truncate text-sm text-white/75">{post.title}</span>
+                  <span className="shrink-0 text-[10px] text-white/20">{post.views} views</span>
                 </div>
                 {post.tags.length > 0 && (
                   <div className="mt-1 flex gap-2">
