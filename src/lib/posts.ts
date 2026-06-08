@@ -25,8 +25,13 @@ export async function getPublishedUiuxPostBySlug(slug: string) {
 }
 
 export async function incrementViews(slug: string) {
-  await prisma.post.updateMany({
+  const post = await prisma.post.findFirst({
     where: { slug: decodeURIComponent(slug), published: true },
-    data: { views: { increment: 1 } },
+    select: { id: true, views: true },
+  });
+  if (!post) return;
+  await prisma.post.update({
+    where: { id: post.id },
+    data: { views: post.views + 1 },
   });
 }
