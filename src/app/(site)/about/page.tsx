@@ -23,7 +23,7 @@ const BIO = {
   intro: `사용자가 느끼는 작은 디테일이 경험 전체를 바꾼다고 믿습니다.
 코드를 짜는 것보다 왜 이렇게 짜야 하는지를 먼저 생각하는 개발자입니다.
 디자인과 개발 사이 어딘가에 서서, 두 언어를 동시에 구사하려 합니다.`,
-  image: "/image/about-dk.JPG",
+  image: "/image/about-dk.jpg",
 };
 
 const STACKS = [
