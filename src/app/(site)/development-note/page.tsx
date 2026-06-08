@@ -11,7 +11,7 @@ const bricolage = Bricolage_Grotesque({
   weight: ["400", "500"],
 });
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function DevNotePage({
   searchParams,
