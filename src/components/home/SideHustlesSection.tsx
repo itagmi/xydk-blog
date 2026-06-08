@@ -85,7 +85,7 @@ function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="block"
+        className="block w-full"
       >
         {image}
       </a>
