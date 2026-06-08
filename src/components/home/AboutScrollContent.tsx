@@ -13,9 +13,18 @@ export default function AboutScrollContent() {
         <h2 className="max-w-[18ch] text-4xl leading-[1.2] font-medium tracking-[-0.02em] text-white md:text-6xl">
           Frontend Developer
         </h2>
-        <p className="text-3xl font-normal tracking-[-0.01em] text-white/90 md:text-5xl">
-          with UI/UX sensitivity
-        </p>
+        <div className="space-y-4">
+          <p className="text-2xl font-normal tracking-[-0.01em] text-white/90 md:text-3xl">
+            with UI/UX sensitivity
+          </p>
+          <p className="text-base leading-relaxed text-white/50 md:text-lg">
+            눈에 보이는 직관적인 UI와 눈에 보이지 않는
+            <br />
+            안정적인 비즈니스 로직, 그 사이의 균형을
+            <br />
+            익숙함에 안주하지 않고 끈임없이 도전하는 삶을 지향합니다.
+          </p>
+        </div>
       </div>
 
       <div data-about-image className="justify-self-start md:justify-self-end">

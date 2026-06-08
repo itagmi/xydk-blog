@@ -73,21 +73,22 @@ export default function PhotoWall({ photos }: { photos: LifePhoto[] }) {
       if (!wallRef.current) return;
       const cards = wallRef.current.querySelectorAll<HTMLElement>("[data-card]");
 
-      gsap.from(cards, {
-        scrollTrigger: {
-          trigger: wallRef.current,
-          start: "top 80%",
-          toggleActions: "play reverse play reverse",
-        },
-        opacity: 0,
-        y: 50,
-        scale: 0.95,
-        duration: 0.7,
-        ease: "power3.out",
-        stagger: { amount: 0.6, from: "random" },
+      cards.forEach((card) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          opacity: 0,
+          y: 50,
+          scale: 0.95,
+          duration: 0.7,
+          ease: "power3.out",
+        });
       });
     },
-    { scope: wallRef }
+    { scope: wallRef, dependencies: [photos.length] }
   );
 
   if (photos.length === 0) {
@@ -151,7 +152,7 @@ export default function PhotoWall({ photos }: { photos: LifePhoto[] }) {
               <div className={`hidden items-start gap-2 sm:flex ${isRight ? "flex-row-reverse" : "flex-row"}`}>
                 <WavyArrow flip={isRight} />
                 <p
-                  className="whitespace-nowrap text-sm italic leading-none text-white/40"
+                  className="whitespace-pre-line text-sm italic leading-snug text-white/40"
                   style={{ marginTop: `${getQuoteMarginTop()}px` }}
                 >
                   {photo.quote}
