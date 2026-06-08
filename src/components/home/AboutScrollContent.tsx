@@ -20,7 +20,7 @@ export default function AboutScrollContent() {
 
       <div data-about-image className="justify-self-start md:justify-self-end">
         <Image
-          src="/images/main-dk.JPG"
+          src="/image/main-dk.JPG"
           alt="Profile image"
           width={520}
           height={700}
