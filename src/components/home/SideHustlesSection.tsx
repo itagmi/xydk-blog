@@ -58,7 +58,7 @@ function InstagramIcon({ className }: { className?: string }) {
 function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
   const image = (
     <div
-      className={`relative h-[240px] w-full max-w-[280px] overflow-hidden lg:h-[200px] lg:w-[200px] ${item.href ? "group" : ""}`}
+      className={`relative mx-auto h-[240px] w-full max-w-[280px] overflow-hidden lg:h-[200px] lg:w-[200px] ${item.href ? "group" : ""}`}
     >
       <Image
         src={item.image}
@@ -84,7 +84,7 @@ function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="block w-full"
+        className="mx-auto block w-full max-w-[280px] lg:w-[200px]"
       >
         {image}
       </a>
