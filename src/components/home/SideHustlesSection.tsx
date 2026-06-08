@@ -57,20 +57,25 @@ function InstagramIcon({ className }: { className?: string }) {
 
 function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
   const image = (
-    <div
-      className={`relative mx-auto h-[240px] w-full max-w-[280px] overflow-hidden lg:h-[200px] lg:w-[200px] ${item.href ? "group" : ""}`}
-    >
+    <div className="relative mx-auto h-[240px] w-full max-w-[280px] overflow-hidden lg:h-[200px] lg:w-[200px]">
       <Image
         src={item.image}
         alt={item.label}
         fill
         sizes="(max-width: 1024px) 80vw, 200px"
-        className={`object-cover ${item.href ? "transition-transform duration-500 ease-out group-hover:scale-105" : ""}`}
+        data-side-hustle-image={item.href ? "" : undefined}
+        className={`object-cover ${item.href ? "lg:transition-transform lg:duration-500 lg:ease-out lg:group-hover:scale-105" : ""}`}
       />
       {item.href && (
         <>
-          <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div
+            data-side-hustle-overlay
+            className="absolute inset-0 bg-black/50 opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100"
+          />
+          <div
+            data-side-hustle-icon
+            className="absolute inset-0 flex items-center justify-center opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100"
+          >
             <InstagramIcon className="h-14 w-14 text-white" />
           </div>
         </>
@@ -84,7 +89,8 @@ function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="mx-auto block w-full max-w-[280px] lg:w-[200px]"
+        data-side-hustle-link
+        className="group mx-auto block w-full max-w-[280px] lg:w-[200px]"
       >
         {image}
       </a>
@@ -113,6 +119,45 @@ export default function SideHustlesSection() {
         duration: 0.8,
         ease: "power3.out",
         stagger: 0.15,
+      });
+
+      ScrollTrigger.matchMedia({
+        "(max-width: 1023px)": () => {
+          const links =
+            listRef.current!.querySelectorAll<HTMLElement>(
+              "[data-side-hustle-link]",
+            );
+
+          links.forEach((link) => {
+            const overlay = link.querySelector("[data-side-hustle-overlay]");
+            const icon = link.querySelector("[data-side-hustle-icon]");
+            const image = link.querySelector("[data-side-hustle-image]");
+
+            if (!overlay || !icon || !image) return;
+
+            gsap.set([overlay, icon], { opacity: 0 });
+            gsap.set(image, { scale: 1, transformOrigin: "center center" });
+
+            gsap
+              .timeline({
+                scrollTrigger: {
+                  trigger: link,
+                  start: "top 82%",
+                  toggleActions: "play none none reverse",
+                },
+              })
+              .to(
+                image,
+                { scale: 1.05, duration: 0.9, ease: "power2.out" },
+                0,
+              )
+              .to(
+                [overlay, icon],
+                { opacity: 1, duration: 0.7, ease: "power2.out" },
+                0,
+              );
+          });
+        },
       });
     },
     { scope: listRef },
