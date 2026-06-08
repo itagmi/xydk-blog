@@ -30,6 +30,20 @@ model Tag {
   posts Post[] @relation("PostTags")
 }
 
+model Inquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  ip        String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read, createdAt])
+  @@index([ip, createdAt])
+}
+
 model Project {
   id          String   @id @default(cuid())
   title       String
