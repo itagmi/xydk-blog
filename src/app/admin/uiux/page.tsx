@@ -7,6 +7,7 @@ import AdminPageShell from "@/components/admin/AdminPageShell";
 import Pagination from "@/components/ui/Pagination";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { getPaginationMeta, parsePage } from "@/lib/pagination";
+import AdminTabs from "@/components/admin/AdminTabs";
 
 export default async function AdminUiuxPage({
   searchParams,
@@ -43,6 +44,7 @@ export default async function AdminUiuxPage({
         </>
       }
     >
+      <AdminTabs current="/admin/uiux" />
       {total === 0 ? (
         <p className="text-sm text-white/30">No posts yet.</p>
       ) : (

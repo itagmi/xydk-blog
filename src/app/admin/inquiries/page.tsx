@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import AdminPageShell from "@/components/admin/AdminPageShell";
 import { markInquiryRead } from "@/app/actions/inquiries";
 import { ButtonLink } from "@/components/ui/Button";
+import AdminTabs from "@/components/admin/AdminTabs";
 
 export default async function InquiriesPage() {
   const inquiries = await prisma.inquiry.findMany({
@@ -21,6 +22,7 @@ export default async function InquiriesPage() {
         </ButtonLink>
       }
     >
+      <AdminTabs current="/admin/inquiries" />
       {inquiries.length === 0 ? (
         <p className="text-sm text-white/30">아직 문의가 없어요.</p>
       ) : (
