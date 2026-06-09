@@ -140,32 +140,33 @@ export default function ChatBot() {
       </div>
 
       {/* 플로팅 버튼 — 장미 */}
-      <div className="fixed bottom-6 right-6 z-[200] sm:right-8" style={{ position: "fixed" }}>
+      <div className="fixed bottom-6 right-6 z-[200] sm:right-8">
         <button
           onClick={() => setOpen(!open)}
-          className="rose-btn relative flex h-16 w-16 cursor-pointer items-center justify-center overflow-visible rounded-full border-none text-3xl"
+          aria-label="챗봇 열기"
+          className="rose-btn relative flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-none text-3xl"
           style={{
+            overflow: "visible",
             background: "#1a0a0a",
             boxShadow: open
-              ? "0 0 0 2px #cc0000, 0 0 30px rgba(220,0,0,0.6)"
-              : "0 0 0 2px #8b0000, 0 0 20px rgba(180,0,0,0.4)",
+              ? "0 0 0 2.5px #cc0000, 0 0 20px rgba(220,0,0,0.7), 0 0 50px rgba(200,0,0,0.4)"
+              : "0 0 0 2.5px #8b0000, 0 0 18px rgba(180,0,0,0.55), 0 0 40px rgba(160,0,0,0.3)",
           }}
-          aria-label="챗봇 열기"
         >
           {open ? "✕" : "🌹"}
 
           {/* 반짝이 */}
           {!open && <>
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white opacity-0" style={{ top: 8, left: 12, "--dur": "1.8s", "--delay": "0s" } as React.CSSProperties} />
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white opacity-0" style={{ top: 6, right: 10, "--dur": "2.1s", "--delay": "0.4s" } as React.CSSProperties} />
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white opacity-0" style={{ bottom: 10, left: 8, "--dur": "1.6s", "--delay": "0.8s" } as React.CSSProperties} />
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white opacity-0" style={{ bottom: 8, right: 12, "--dur": "2.3s", "--delay": "0.2s" } as React.CSSProperties} />
+            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ top: 8, left: 12, "--dur": "1.8s", "--delay": "0s" } as React.CSSProperties} />
+            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ top: 6, right: 10, "--dur": "2.1s", "--delay": "0.4s" } as React.CSSProperties} />
+            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ bottom: 10, left: 8, "--dur": "1.6s", "--delay": "0.8s" } as React.CSSProperties} />
+            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ bottom: 8, right: 12, "--dur": "2.3s", "--delay": "0.2s" } as React.CSSProperties} />
           </>}
 
           {/* 하트 */}
           {!open && <>
-            <span className="heart-particle absolute text-[10px] opacity-0" style={{ top: -5, left: 5, "--dur": "2.5s", "--delay": "0s" } as React.CSSProperties}>🤍</span>
-            <span className="heart-particle absolute text-[10px] opacity-0" style={{ top: -5, right: 5, "--dur": "2.8s", "--delay": "1.2s" } as React.CSSProperties}>🤍</span>
+            <span className="heart-particle absolute text-[10px]" style={{ top: -5, left: 5, "--dur": "2.5s", "--delay": "0s" } as React.CSSProperties}>🤍</span>
+            <span className="heart-particle absolute text-[10px]" style={{ top: -5, right: 5, "--dur": "2.8s", "--delay": "1.2s" } as React.CSSProperties}>🤍</span>
           </>}
         </button>
       </div>
