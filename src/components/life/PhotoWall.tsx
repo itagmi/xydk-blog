@@ -101,13 +101,13 @@ export default function PhotoWall({ photos }: { photos: LifePhoto[] }) {
   }
 
   return (
-    <div ref={wallRef} className="flex flex-col gap-16">
+    <div ref={wallRef} className="flex flex-col gap-20 sm:gap-16">
       {photos.map((photo, i) => {
         const rotation = ROTATIONS[i % ROTATIONS.length];
         const isRight = i % 2 === 1;
 
         return (
-          <div key={i} data-card className="flex flex-col gap-5 sm:gap-0">
+          <div key={i} data-card className="flex flex-col gap-6 sm:gap-0">
             {/* 데스크탑: 가로 레이아웃 */}
             <div className={`flex items-center gap-6 ${isRight ? "flex-row-reverse justify-start" : "flex-row justify-start"}`}>
               {/* 폴라로이드 카드 */}
