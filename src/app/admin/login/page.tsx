@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { login } from "@/app/actions/auth";
 import { Bricolage_Grotesque } from "next/font/google";
 import { Button } from "@/components/ui/Button";
 
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"], weight: ["500"] });
 
-export default function LoginPage() {
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const resetSuccess = searchParams.get("reset") === "success";
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -30,6 +33,11 @@ export default function LoginPage() {
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {resetSuccess && (
+            <p className="text-xs text-emerald-400/80">
+              비밀번호가 변경되었습니다. 새 비밀번호로 로그인해주세요.
+            </p>
+          )}
           <input
             name="email"
             type="email"
@@ -55,5 +63,19 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-[#0c0c0c]">
+          <p className="text-sm text-white/40">Loading...</p>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
