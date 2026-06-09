@@ -1,0 +1,125 @@
+
+<style>
+.rose-btn {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #1a0a0a;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  animation: float 3s ease-in-out infinite;
+  box-shadow: 0 0 0 2px #8b0000, 0 0 20px rgba(180,0,0,0.4);
+  overflow: visible;
+}
+.rose-btn:hover {
+  box-shadow: 0 0 0 2px #cc0000, 0 0 30px rgba(220,0,0,0.6);
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-4px) rotate(3deg); }
+  66% { transform: translateY(-2px) rotate(-2deg); }
+}
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: white;
+  animation: sparkle-anim var(--dur) ease-in-out infinite var(--delay);
+  opacity: 0;
+}
+@keyframes sparkle-anim {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.heart {
+  position: absolute;
+  font-size: 10px;
+  animation: heart-float var(--dur) ease-in-out infinite var(--delay);
+  opacity: 0;
+}
+@keyframes heart-float {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  30% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-30px) scale(1); }
+}
+.demo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 0;
+}
+.label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+  text-align: center;
+}
+.sizes {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+.size-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.rose-btn.sm { width: 44px; height: 44px; font-size: 22px; }
+.rose-btn.lg { width: 80px; height: 80px; font-size: 40px; }
+</style>
+
+<div class="demo-area">
+  <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+    <div style="position:relative; display:inline-block;">
+      <button class="rose-btn" id="mainBtn" onclick="sendPrompt('이 장미 버튼 코드 주세요')">
+        🌹
+        <span class="sparkle" style="top:8px;left:12px;--dur:1.8s;--delay:0s;"></span>
+        <span class="sparkle" style="top:6px;right:10px;--dur:2.1s;--delay:0.4s;"></span>
+        <span class="sparkle" style="bottom:10px;left:8px;--dur:1.6s;--delay:0.8s;"></span>
+        <span class="sparkle" style="bottom:8px;right:12px;--dur:2.3s;--delay:0.2s;"></span>
+        <span class="sparkle" style="top:50%;left:4px;--dur:1.9s;--delay:1s;"></span>
+        <span class="heart" style="top:-5px;left:5px;--dur:2.5s;--delay:0s;">🤍</span>
+        <span class="heart" style="top:-5px;right:5px;--dur:2.8s;--delay:1.2s;">🤍</span>
+      </button>
+    </div>
+    <span class="label">기본 사이즈 (64px)</span>
+  </div>
+
+  <div class="sizes">
+    <div class="size-wrap">
+      <div style="position:relative;">
+        <button class="rose-btn sm">
+          🌹
+          <span class="sparkle" style="top:5px;left:7px;--dur:1.8s;--delay:0.3s;"></span>
+          <span class="sparkle" style="bottom:5px;right:7px;--dur:2s;--delay:0.7s;"></span>
+        </button>
+      </div>
+      <span class="label">small (44px)</span>
+    </div>
+    <div class="size-wrap">
+      <div style="position:relative;">
+        <button class="rose-btn lg">
+          🌹
+          <span class="sparkle" style="top:10px;left:14px;--dur:1.8s;--delay:0s;"></span>
+          <span class="sparkle" style="top:8px;right:12px;--dur:2.1s;--delay:0.4s;"></span>
+          <span class="sparkle" style="bottom:12px;left:10px;--dur:1.6s;--delay:0.8s;"></span>
+          <span class="sparkle" style="bottom:10px;right:14px;--dur:2.3s;--delay:0.2s;"></span>
+          <span class="heart" style="top:-8px;left:8px;--dur:2.5s;--delay:0s;">🤍</span>
+          <span class="heart" style="top:-8px;right:8px;--dur:2.8s;--delay:1s;">🤍</span>
+          <span class="heart" style="top:0px;left:0px;--dur:3s;--delay:0.5s;">🤍</span>
+        </button>
+      </div>
+      <span class="label">large (80px)</span>
+    </div>
+  </div>
+
+  <p style="font-size:13px; color:var(--color-text-secondary); text-align:center;">기본 버튼 클릭하면 코드 받을 수 있어 ↗</p>
+</div>

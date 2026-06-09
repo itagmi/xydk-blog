@@ -1,24 +1,101 @@
 @import "tailwindcss";
 
-/* Rose chatbot button animations */
+/* Rose chatbot button — rose_chatbot_button.html 과 동일 */
 @keyframes rose-float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-4px) rotate(3deg); }
-  66% { transform: translateY(-2px) rotate(-2deg); }
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-4px) rotate(3deg);
+  }
+  66% {
+    transform: translateY(-2px) rotate(-2deg);
+  }
 }
-@keyframes sparkle-anim {
-  0%, 100% { opacity: 0; transform: scale(0); }
-  50% { opacity: 1; transform: scale(1); }
+
+@keyframes rose-sparkle-anim {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-@keyframes heart-float {
-  0% { opacity: 0; transform: translateY(0) scale(0.5); }
-  30% { opacity: 0.8; }
-  100% { opacity: 0; transform: translateY(-30px) scale(1); }
+
+@keyframes rose-heart-float {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(1);
+  }
 }
-@layer utilities {
-  .rose-btn { animation: rose-float 3s ease-in-out infinite; }
-  .sparkle-dot { animation: sparkle-anim var(--dur, 2s) ease-in-out infinite var(--delay, 0s); }
-  .heart-dot { animation: heart-float var(--dur, 2.5s) ease-in-out infinite var(--delay, 0s); }
+
+@layer components {
+  .rose-btn {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #1a0a0a;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    line-height: 1;
+    animation: rose-float 3s ease-in-out infinite;
+    box-shadow:
+      0 0 0 2px #8b0000,
+      0 0 20px rgba(180, 0, 0, 0.4);
+    overflow: visible;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .rose-btn:hover {
+    box-shadow:
+      0 0 0 2px #cc0000,
+      0 0 30px rgba(220, 0, 0, 0.6);
+  }
+
+  .rose-btn--open {
+    animation: none;
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow:
+      0 0 0 2px #cc0000,
+      0 0 30px rgba(220, 0, 0, 0.6);
+  }
+
+  .rose-sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: white;
+    pointer-events: none;
+    animation: rose-sparkle-anim var(--dur, 2s) ease-in-out infinite
+      var(--delay, 0s);
+  }
+
+  .rose-heart {
+    position: absolute;
+    font-size: 10px;
+    line-height: 1;
+    pointer-events: none;
+    animation: rose-heart-float var(--dur, 2.5s) ease-in-out infinite
+      var(--delay, 0s);
+  }
 }
 
 /* Dev Note markdown styles */

@@ -5,7 +5,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
 export async function POST(request: Request) {
@@ -25,11 +25,12 @@ export async function POST(request: Request) {
   // 2. Supabase에서 유사한 문서 검색
   const { data: docs } = await supabase.rpc("match_documents", {
     query_embedding: queryEmbedding,
-    match_threshold: 0.3,
-    match_count: 4,
+    match_threshold: 0.1,
+    match_count: 5,
   });
 
-  const context = docs?.map((d: { content: string }) => d.content).join("\n\n") ?? "";
+  const context =
+    docs?.map((d: { content: string }) => d.content).join("\n\n") ?? "";
 
   // 3. GPT로 답변 스트리밍
   const stream = await openai.chat.completions.create({
@@ -38,10 +39,10 @@ export async function POST(request: Request) {
     messages: [
       {
         role: "system",
-        content: `당신은 유다경의 포트폴리오 사이트 챗봇입니다.
-아래 정보를 바탕으로 방문자의 질문에 친근하고 자연스럽게 답변하세요.
-정보에 없는 내용은 "아직 공개된 정보가 없어요 😊"라고 말하세요.
-답변은 간결하게, 2~4문장 이내로 해주세요.
+        content: `당신은 유다경의 포트폴리오 챗봇입니다.
+방문자가 유다경에 대해 궁금한 것을 물어보면 아래 정보를 바탕으로 친근하게 답변하세요.
+정보가 부족할 경우 있는 정보 내에서 최대한 답변하고, 정말 없는 경우에만 Contact 페이지로 안내하세요.
+답변은 2~4문장, 한국어로 해주세요.
 
 --- 포트폴리오 정보 ---
 ${context}`,

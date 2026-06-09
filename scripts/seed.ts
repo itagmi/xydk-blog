@@ -1,12 +1,13 @@
 import "dotenv/config";
 import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
+import { requireAsciiEnv } from "./env";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: requireAsciiEnv("OPENAI_API_KEY") });
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  requireAsciiEnv("NEXT_PUBLIC_SUPABASE_URL"),
+  requireAsciiEnv("SUPABASE_SERVICE_ROLE_KEY"),
 );
 
 // ── 내 포트폴리오 정보 ──────────────────────────────
@@ -25,12 +26,20 @@ const DOCUMENTS = [
 - 도구: Git, Jenkins, Docker, Vercel, Supabase`,
 
   // 경력
-  `경력:
-1. 2021.09 ~ 현재 | 보안 솔루션 중소기업 | Frontend Developer
-   - 프로젝트 관리 시스템 개발 및 유지보수
+  `경력 및 직무 경험:
+유다경의 경력은 총 약 7년입니다.
 
-2. 2018.12 ~ 2021.08 | 스타트업 & 프리랜서 | UI Developer
-   - 퍼블리싱 및 인터랙션 구현`,
+1. 2021년 9월 ~ 현재 (약 4년) | 보안 솔루션 중소기업 | Frontend Developer
+   - React, TypeScript 기반 프로젝트 관리 시스템 개발 및 유지보수
+   - Jenkins CI/CD 파이프라인 운영
+   - RESTful API 연동 및 상태 관리
+   - 보안 솔루션 Admin UI 개발
+
+2. 2018년 12월 ~ 2021년 8월 (약 2년 8개월) | 스타트업 & 프리랜서 | UI Developer
+   - HTML/CSS 퍼블리싱 및 인터랙션 구현
+   - 다양한 클라이언트 프로젝트 경험
+
+현재 이직을 준비 중입니다.`,
 
   // 수상 및 주요 프로젝트
   `수상 및 주요 프로젝트:
@@ -76,7 +85,10 @@ async function main() {
   console.log(`총 ${DOCUMENTS.length}개 문서 처리 시작...`);
 
   // 기존 데이터 삭제 (재실행 시 중복 방지)
-  const { error: deleteError } = await supabase.from("documents").delete().neq("id", 0);
+  const { error: deleteError } = await supabase
+    .from("documents")
+    .delete()
+    .neq("id", 0);
   if (deleteError) console.warn("삭제 스킵:", deleteError.message);
 
   for (let i = 0; i < DOCUMENTS.length; i++) {
@@ -85,7 +97,9 @@ async function main() {
 
     const embedding = await embed(content);
 
-    const { error } = await supabase.from("documents").insert({ content, embedding });
+    const { error } = await supabase
+      .from("documents")
+      .insert({ content, embedding });
     if (error) {
       console.error(`❌ 저장 실패:`, error.message);
     } else {
