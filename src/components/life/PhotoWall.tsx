@@ -107,57 +107,65 @@ export default function PhotoWall({ photos }: { photos: LifePhoto[] }) {
         const isRight = i % 2 === 1;
 
         return (
-          <div
-            key={i}
-            data-card
-            className={`flex items-center gap-6 ${isRight ? "flex-row-reverse justify-start" : "flex-row justify-start"}`}
-          >
-            {/* 폴라로이드 카드 */}
-            <div
-              style={{ "--rotate": `${rotation}deg` } as React.CSSProperties}
-              className="group w-[280px] shrink-0 bg-white p-3 pb-10 shadow-[0_4px_24px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out [transform:rotate(var(--rotate))] hover:scale-[1.04] hover:[transform:rotate(0deg)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.6)] sm:w-[320px]"
-            >
-              <div className="overflow-hidden bg-[#1a1a1a]">
-                {isVideo(photo.src) ? (
-                  <video
-                    src={photo.src}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="h-[220px] w-full object-cover sm:h-[260px]"
-                  />
-                ) : (
-                  <Image
-                    src={photo.src}
-                    alt={photo.caption}
-                    width={400}
-                    height={400}
-                    className="h-[220px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] sm:h-[260px]"
-                  />
-                )}
+          <div key={i} data-card className="flex flex-col gap-5 sm:gap-0">
+            {/* 데스크탑: 가로 레이아웃 */}
+            <div className={`flex items-center gap-6 ${isRight ? "flex-row-reverse justify-start" : "flex-row justify-start"}`}>
+              {/* 폴라로이드 카드 */}
+              <div
+                style={{ "--rotate": `${rotation}deg` } as React.CSSProperties}
+                className="group w-[280px] shrink-0 bg-white p-3 pb-10 shadow-[0_4px_24px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out [transform:rotate(var(--rotate))] hover:scale-[1.04] hover:[transform:rotate(0deg)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.6)] sm:w-[320px]"
+              >
+                <div className="overflow-hidden bg-[#1a1a1a]">
+                  {isVideo(photo.src) ? (
+                    <video
+                      src={photo.src}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="h-[220px] w-full object-cover sm:h-[260px]"
+                    />
+                  ) : (
+                    <Image
+                      src={photo.src}
+                      alt={photo.caption}
+                      width={400}
+                      height={400}
+                      className="h-[220px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] sm:h-[260px]"
+                    />
+                  )}
+                </div>
+                <div className="mt-3 px-1">
+                  <p className="text-[13px] leading-snug text-[#111]">{photo.caption}</p>
+                  {(photo.location || photo.date) && (
+                    <p className="mt-1 text-[11px] uppercase tracking-[0.08em] text-[#888]">
+                      {[photo.location, photo.date].filter(Boolean).join(" · ")}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="mt-3 px-1">
-                <p className="text-[13px] leading-snug text-[#111]">{photo.caption}</p>
-                {(photo.location || photo.date) && (
-                  <p className="mt-1 text-[11px] uppercase tracking-[0.08em] text-[#888]">
-                    {[photo.location, photo.date].filter(Boolean).join(" · ")}
+
+              {/* 화살표 + 글귀 (sm 이상) */}
+              {photo.quote && (
+                <div className={`hidden items-start gap-2 sm:flex ${isRight ? "flex-row-reverse" : "flex-row"}`}>
+                  <WavyArrow flip={isRight} />
+                  <p
+                    className="whitespace-pre-line text-sm italic leading-snug text-white/40"
+                    style={{ marginTop: `${getQuoteMarginTop()}px` }}
+                  >
+                    {photo.quote}
                   </p>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
-            {/* 화살표 + 글귀 */}
+            {/* 글귀 (모바일 전용 — 카드 아래) */}
             {photo.quote && (
-              <div className={`hidden items-start gap-2 sm:flex ${isRight ? "flex-row-reverse" : "flex-row"}`}>
-                <WavyArrow flip={isRight} />
-                <p
-                  className="whitespace-pre-line text-sm italic leading-snug text-white/40"
-                  style={{ marginTop: `${getQuoteMarginTop()}px` }}
-                >
-                  {photo.quote}
-                </p>
-              </div>
+              <p className={`whitespace-pre-line text-sm italic leading-relaxed text-white/40 sm:hidden ${isRight ? "text-right" : "text-left"}`}
+                style={{ paddingLeft: isRight ? 0 : "1rem", paddingRight: isRight ? "1rem" : 0 }}
+              >
+                {photo.quote}
+              </p>
             )}
           </div>
         );
