@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+/* Rose chatbot button animations */
+@keyframes rose-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-4px) rotate(3deg); }
+  66% { transform: translateY(-2px) rotate(-2deg); }
+}
+@keyframes sparkle-anim {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes heart-float {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  30% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-30px) scale(1); }
+}
+.rose-btn { animation: rose-float 3s ease-in-out infinite; }
+.sparkle { animation: sparkle-anim var(--dur) ease-in-out infinite var(--delay); }
+.heart-particle { animation: heart-float var(--dur) ease-in-out infinite var(--delay); }
+
 /* Dev Note markdown styles */
 .prose-dk { color: rgba(255,255,255,0.75); line-height: 1.75; }
 .prose-dk h1,.prose-dk h2,.prose-dk h3,.prose-dk h4 { color: rgba(255,255,255,0.9); font-weight: 500; margin-top: 1.75em; margin-bottom: 0.5em; }
