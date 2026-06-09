@@ -157,16 +157,16 @@ export default function ChatBot() {
 
           {/* 반짝이 */}
           {!open && <>
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ top: 8, left: 12, "--dur": "1.8s", "--delay": "0s" } as React.CSSProperties} />
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ top: 6, right: 10, "--dur": "2.1s", "--delay": "0.4s" } as React.CSSProperties} />
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ bottom: 10, left: 8, "--dur": "1.6s", "--delay": "0.8s" } as React.CSSProperties} />
-            <span className="sparkle absolute h-1 w-1 rounded-full bg-white" style={{ bottom: 8, right: 12, "--dur": "2.3s", "--delay": "0.2s" } as React.CSSProperties} />
+            <span className="sparkle-dot absolute h-1 w-1 rounded-full bg-white" style={{ top: 8, left: 12, "--dur": "1.8s", "--delay": "0s" } as React.CSSProperties} />
+            <span className="sparkle-dot absolute h-1 w-1 rounded-full bg-white" style={{ top: 6, right: 10, "--dur": "2.1s", "--delay": "0.4s" } as React.CSSProperties} />
+            <span className="sparkle-dot absolute h-1 w-1 rounded-full bg-white" style={{ bottom: 10, left: 8, "--dur": "1.6s", "--delay": "0.8s" } as React.CSSProperties} />
+            <span className="sparkle-dot absolute h-1 w-1 rounded-full bg-white" style={{ bottom: 8, right: 12, "--dur": "2.3s", "--delay": "0.2s" } as React.CSSProperties} />
           </>}
 
           {/* 하트 */}
           {!open && <>
-            <span className="heart-particle absolute text-[10px]" style={{ top: -5, left: 5, "--dur": "2.5s", "--delay": "0s" } as React.CSSProperties}>🤍</span>
-            <span className="heart-particle absolute text-[10px]" style={{ top: -5, right: 5, "--dur": "2.8s", "--delay": "1.2s" } as React.CSSProperties}>🤍</span>
+            <span className="heart-dot absolute text-[10px]" style={{ top: -5, left: 5, "--dur": "2.5s", "--delay": "0s" } as React.CSSProperties}>🤍</span>
+            <span className="heart-dot absolute text-[10px]" style={{ top: -5, right: 5, "--dur": "2.8s", "--delay": "1.2s" } as React.CSSProperties}>🤍</span>
           </>}
         </button>
       </div>

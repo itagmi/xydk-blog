@@ -15,9 +15,11 @@
   30% { opacity: 0.8; }
   100% { opacity: 0; transform: translateY(-30px) scale(1); }
 }
-.rose-btn { animation: rose-float 3s ease-in-out infinite; }
-.sparkle { animation: sparkle-anim var(--dur) ease-in-out infinite var(--delay); }
-.heart-particle { animation: heart-float var(--dur) ease-in-out infinite var(--delay); }
+@layer utilities {
+  .rose-btn { animation: rose-float 3s ease-in-out infinite; }
+  .sparkle-dot { animation: sparkle-anim var(--dur, 2s) ease-in-out infinite var(--delay, 0s); }
+  .heart-dot { animation: heart-float var(--dur, 2.5s) ease-in-out infinite var(--delay, 0s); }
+}
 
 /* Dev Note markdown styles */
 .prose-dk { color: rgba(255,255,255,0.75); line-height: 1.75; }
