@@ -161,9 +161,7 @@ export default function PhotoWall({ photos }: { photos: LifePhoto[] }) {
 
             {/* 글귀 (모바일 전용 — 카드 아래) */}
             {photo.quote && (
-              <p className={`whitespace-pre-line text-sm italic leading-relaxed text-white/40 sm:hidden ${isRight ? "text-right" : "text-left"}`}
-                style={{ paddingLeft: isRight ? 0 : "1rem", paddingRight: isRight ? "1rem" : 0 }}
-              >
+              <p className={`block whitespace-pre-line text-sm italic leading-relaxed text-white/40 sm:hidden ${isRight ? "pl-0 text-right" : "pl-4 text-left"}`}>
                 {photo.quote}
               </p>
             )}
