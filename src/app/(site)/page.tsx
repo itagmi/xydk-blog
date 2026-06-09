@@ -11,7 +11,7 @@ export default function Home() {
       <ScrollSection>
         <AboutScrollContent />
       </ScrollSection>
-      <ScrollSection flex className="relative z-10 overflow-x-clip">
+      <ScrollSection flex className="relative z-10 overflow-x-clip max-lg:justify-start max-lg:py-28">
         <SideHustlesSection />
       </ScrollSection>
       <ScrollSection flex>

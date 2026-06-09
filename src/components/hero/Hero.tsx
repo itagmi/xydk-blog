@@ -23,7 +23,8 @@ const CORNERS = [
   },
   {
     key: "yourself",
-    className: "absolute top-[22%] right-[6%] text-right md:top-[30%] md:right-[9%]",
+    className:
+      "absolute top-[22%] right-[6%] text-right md:top-[30%] md:right-[9%]",
     fx: 28,
     fy: -22,
     href: "/life",
@@ -39,7 +40,8 @@ const CORNERS = [
   },
   {
     key: "kinetics",
-    className: "absolute bottom-[22%] right-[6%] text-right md:bottom-[30%] md:right-[9%]",
+    className:
+      "absolute bottom-[22%] right-[6%] text-right md:bottom-[30%] md:right-[9%]",
     fx: 24,
     fy: 18,
     href: "/ui-ux-thought",

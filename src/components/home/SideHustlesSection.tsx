@@ -108,30 +108,31 @@ export default function SideHustlesSection() {
       if (!listRef.current) return;
       const items = listRef.current.querySelectorAll("li");
 
-      gsap.from(items, {
-        scrollTrigger: {
-          trigger: listRef.current,
-          start: "top 75%",
-          toggleActions: "play reverse play reverse",
-        },
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.15,
-      });
-
       ScrollTrigger.matchMedia({
         "(max-width: 1023px)": () => {
-          const links =
-            listRef.current!.querySelectorAll<HTMLElement>(
-              "[data-side-hustle-link]",
-            );
+          items.forEach((item) => {
+            gsap.from(item, {
+              scrollTrigger: {
+                trigger: item,
+                start: "top 88%",
+                toggleActions: "play none none reverse",
+              },
+              opacity: 0,
+              y: 48,
+              duration: 0.85,
+              ease: "power3.out",
+            });
+          });
+
+          const links = listRef.current!.querySelectorAll<HTMLElement>(
+            "[data-side-hustle-link]",
+          );
 
           links.forEach((link) => {
             const overlay = link.querySelector("[data-side-hustle-overlay]");
             const icon = link.querySelector("[data-side-hustle-icon]");
             const image = link.querySelector("[data-side-hustle-image]");
+            const trigger = link.closest("li") ?? link;
 
             if (!overlay || !icon || !image) return;
 
@@ -141,21 +142,31 @@ export default function SideHustlesSection() {
             gsap
               .timeline({
                 scrollTrigger: {
-                  trigger: link,
-                  start: "top 82%",
+                  trigger,
+                  start: "top 50%",
                   toggleActions: "play none none reverse",
                 },
               })
-              .to(
-                image,
-                { scale: 1.05, duration: 0.9, ease: "power2.out" },
-                0,
-              )
+              .to(image, { scale: 1.05, duration: 0.9, ease: "power2.out" }, 0)
               .to(
                 [overlay, icon],
                 { opacity: 1, duration: 0.7, ease: "power2.out" },
                 0,
               );
+          });
+        },
+        "(min-width: 1024px)": () => {
+          gsap.from(items, {
+            scrollTrigger: {
+              trigger: listRef.current,
+              start: "top 75%",
+              toggleActions: "play reverse play reverse",
+            },
+            opacity: 0,
+            y: 40,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.15,
           });
         },
       });
@@ -164,8 +175,8 @@ export default function SideHustlesSection() {
   );
 
   return (
-    <div className="flex w-full max-w-[1200px] flex-col gap-16 md:gap-20">
-      <header className="w-full">
+    <div className="flex w-full max-w-[1200px] flex-col gap-20 lg:gap-16 xl:gap-20">
+      <header className="w-full max-lg:pb-4">
         <h2
           className={`${bricolage.className} text-right text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-[1.08] tracking-[-0.02em] text-white/90`}
         >
@@ -173,17 +184,17 @@ export default function SideHustlesSection() {
         </h2>
       </header>
 
-      <div className="flex w-full flex-col items-center gap-14 text-center">
+      <div className="flex w-full flex-col items-center gap-20 text-center lg:gap-14">
         <ul
           ref={listRef}
-          className="flex w-full flex-col items-center gap-14 lg:flex-row lg:items-start lg:justify-center lg:gap-10"
+          className="flex w-full flex-col items-center gap-40 py-12 lg:flex-row lg:items-start lg:justify-center lg:gap-10 lg:py-0"
         >
           {ITEMS.map((item) => (
             <li
               key={item.key}
               className="w-full max-w-[360px] lg:w-[34ch] lg:shrink-0"
             >
-              <article className="flex flex-col items-center gap-5">
+              <article className="flex flex-col items-center gap-8 lg:gap-5">
                 <p className="text-sm text-white/40">{item.label}</p>
                 <SideHustleImage item={item} />
                 <p className="text-base leading-relaxed uppercase tracking-[0.06em] text-white/55 md:text-[15px]">
