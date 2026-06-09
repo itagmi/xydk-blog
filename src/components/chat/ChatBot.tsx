@@ -176,7 +176,7 @@ export default function ChatBot() {
             placeholder="질문을 입력하세요..."
             disabled={loading}
             enterKeyHint="send"
-            className="min-h-11 flex-1 bg-transparent text-sm text-white/70 placeholder:text-white/25 focus:outline-none disabled:opacity-40"
+            className="min-h-11 flex-1 bg-transparent text-base text-white/70 placeholder:text-white/25 focus:outline-none disabled:opacity-40 sm:text-sm"
           />
           <button
             type="submit"

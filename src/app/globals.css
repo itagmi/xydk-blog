@@ -96,6 +96,37 @@
     animation: rose-heart-float var(--dur, 2.5s) ease-in-out infinite
       var(--delay, 0s);
   }
+
+  .life-video-shimmer {
+    overflow: hidden;
+    background: linear-gradient(180deg, #c8c2b8 0%, #ddd8d0 50%, #c8c2b8 100%);
+  }
+
+  .life-video-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 55%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 30%,
+      rgba(255, 255, 255, 0.75) 50%,
+      rgba(255, 255, 255, 0.15) 70%,
+      transparent 100%
+    );
+    animation: life-shimmer-sweep 1.35s ease-in-out infinite;
+  }
+}
+
+@keyframes life-shimmer-sweep {
+  0%,
+  100% {
+    transform: translateX(-120%);
+  }
+  50% {
+    transform: translateX(240%);
+  }
 }
 
 /* Dev Note markdown styles */

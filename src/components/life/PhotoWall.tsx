@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import type { LifePhoto } from "@/config/life";
+import LifeVideo from "@/components/life/LifeVideo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,16 +116,9 @@ export default function PhotoWall({ photos }: { photos: LifePhoto[] }) {
                 style={{ "--rotate": `${rotation}deg` } as React.CSSProperties}
                 className="group w-[280px] shrink-0 bg-white p-3 pb-10 shadow-[0_4px_24px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out [transform:rotate(var(--rotate))] hover:scale-[1.04] hover:[transform:rotate(0deg)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.6)] sm:w-[320px]"
               >
-                <div className="overflow-hidden bg-[#1a1a1a]">
+                <div className="overflow-hidden">
                   {isVideo(photo.src) ? (
-                    <video
-                      src={photo.src}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="h-[220px] w-full object-cover sm:h-[260px]"
-                    />
+                    <LifeVideo src={photo.src} poster={photo.poster} />
                   ) : (
                     <Image
                       src={photo.src}

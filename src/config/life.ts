@@ -1,5 +1,6 @@
 export type LifePhoto = {
   src: string;
+  poster?: string;
   caption: string;
   location?: string;
   date?: string;
