@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Bricolage_Grotesque } from "next/font/google";
 import { createClient } from "@/lib/supabase/client";
+import { parseAuthHashError } from "@/lib/auth/redirect";
 import { Button } from "@/components/ui/Button";
 
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"], weight: ["500"] });
@@ -24,8 +25,22 @@ function ResetPasswordForm() {
 
   useEffect(() => {
     const supabase = createClient();
+    let subscription: { unsubscribe: () => void } | null = null;
 
     async function initSession() {
+      const hashError = parseAuthHashError(window.location.hash);
+      if (hashError) {
+        setError(hashError);
+        setChecking(false);
+        return;
+      }
+
+      if (searchParams.get("error") === "auth_callback_failed") {
+        setError("인증에 실패했습니다. 비밀번호 재설정을 다시 요청해주세요.");
+        setChecking(false);
+        return;
+      }
+
       const code = searchParams.get("code");
       const tokenHash = searchParams.get("token_hash");
       const type = searchParams.get("type");
@@ -57,14 +72,13 @@ function ResetPasswordForm() {
           return;
         }
 
-        const {
-          data: { subscription },
-        } = supabase.auth.onAuthStateChange((event) => {
+        const { data } = supabase.auth.onAuthStateChange((event) => {
           if (event === "PASSWORD_RECOVERY") {
             setReady(true);
             setChecking(false);
           }
         });
+        subscription = data.subscription;
 
         await new Promise((resolve) => setTimeout(resolve, 150));
 
@@ -74,8 +88,6 @@ function ResetPasswordForm() {
         if (sessionAfterHash) {
           setReady(true);
         }
-
-        return () => subscription.unsubscribe();
       } catch (err) {
         setError(
           err instanceof Error
@@ -88,6 +100,10 @@ function ResetPasswordForm() {
     }
 
     void initSession();
+
+    return () => {
+      subscription?.unsubscribe();
+    };
   }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -131,9 +147,7 @@ function ResetPasswordForm() {
           새 비밀번호를 입력해주세요.
         </p>
 
-        {checking && (
-          <p className="text-sm text-white/40">링크 확인 중...</p>
-        )}
+        {checking && <p className="text-sm text-white/40">링크 확인 중...</p>}
 
         {!checking && !ready && (
           <div className="flex flex-col gap-4">

@@ -14,7 +14,7 @@ export default function ChatBot() {
     {
       role: "assistant",
       content:
-        "안녕하세요! 다경의 포트폴리오에 오신걸 환영해요. 😊 궁금한 것들을 물어보세요. 🌹",
+        "안녕하세요! 다경의 포트폴리오에 오신걸 환영해요. 😊\n궁금한 것들을 물어보세요. 🌹",
     },
   ]);
   const [input, setInput] = useState("");
@@ -82,20 +82,24 @@ export default function ChatBot() {
     <>
       {/* 채팅창 */}
       <div
-        className={`fixed bottom-24 right-6 z-[200] flex w-[320px] flex-col overflow-hidden border border-white/10 bg-[#111] shadow-[0_8px_40px_rgba(0,0,0,0.6)] transition-all duration-300 sm:right-8 sm:w-[360px] ${
+        className={`fixed left-3 right-3 z-[200] flex w-auto flex-col overflow-hidden border border-white/10 bg-[#111] shadow-[0_8px_40px_rgba(0,0,0,0.6)] transition-all duration-300 sm:left-auto sm:right-8 sm:w-[360px] ${
+          open ? "bottom-6 sm:bottom-24" : "bottom-24"
+        } ${
           open
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
         }`}
       >
         {/* 헤더 */}
-        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+        <div className="flex items-center justify-between border-b border-white/10 px-3 py-2.5">
           <p className="text-xs uppercase tracking-[0.12em] text-white/60">
             Ask about Dakyung
           </p>
           <button
+            type="button"
             onClick={() => setOpen(false)}
-            className="text-white/30 transition-colors hover:text-white/70"
+            aria-label="챗봇 닫기"
+            className="flex h-10 w-10 shrink-0 items-center justify-center text-white/30 transition-colors hover:text-white/70"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path
@@ -110,7 +114,7 @@ export default function ChatBot() {
 
         {/* 메시지 목록 */}
         <div
-          className="flex flex-col gap-3 overflow-y-auto p-4"
+          className="flex flex-col gap-2.5 overflow-y-auto p-3 sm:gap-3"
           style={{ height: 320 }}
         >
           {messages.map((msg, i) => (
@@ -119,10 +123,10 @@ export default function ChatBot() {
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[80%] px-3 py-2 text-sm leading-relaxed ${
+                className={`whitespace-pre-line py-2 text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-white/10 text-white/80"
-                    : "text-white/60"
+                    ? "max-w-[88%] bg-white/10 px-3 text-white/80 sm:max-w-[94%]"
+                    : "w-full text-white/60"
                 }`}
               >
                 {msg.content}
@@ -158,22 +162,29 @@ export default function ChatBot() {
         </div>
 
         {/* 입력창 */}
-        <div className="flex items-center gap-2 border-t border-white/10 px-3 py-2">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void send();
+          }}
+          className="flex items-center gap-2 border-t border-white/10 px-3 py-2.5 sm:py-2"
+        >
           <input
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && send()}
             placeholder="질문을 입력하세요..."
             disabled={loading}
-            className="flex-1 bg-transparent text-sm text-white/70 placeholder:text-white/25 focus:outline-none disabled:opacity-40"
+            enterKeyHint="send"
+            className="min-h-11 flex-1 bg-transparent text-sm text-white/70 placeholder:text-white/25 focus:outline-none disabled:opacity-40"
           />
           <button
-            onClick={send}
+            type="submit"
             disabled={loading || !input.trim()}
-            className="text-white/30 transition-colors hover:text-white/70 disabled:opacity-30"
+            aria-label="전송"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/60 transition-colors active:bg-white/15 hover:text-white/80 disabled:opacity-30 sm:h-9 sm:w-9 sm:rounded-none sm:bg-transparent"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" className="sm:h-4 sm:w-4">
               <path
                 d="M14 8H2M14 8L9 3M14 8L9 13"
                 stroke="currentColor"
@@ -183,11 +194,15 @@ export default function ChatBot() {
               />
             </svg>
           </button>
-        </div>
+        </form>
       </div>
 
-      {/* 플로팅 버튼 — 장미 */}
-      <div className="fixed bottom-6 right-6 z-[200] sm:right-8">
+      {/* 플로팅 버튼 — 장미 (모바일에서 채팅 열림 시 숨김, 헤더 X로 닫기) */}
+      <div
+        className={`fixed bottom-6 right-6 z-[200] transition-opacity duration-300 sm:right-8 ${
+          open ? "max-sm:pointer-events-none max-sm:opacity-0" : ""
+        }`}
+      >
         <RoseChatButton open={open} onClick={() => setOpen(!open)} />
       </div>
     </>

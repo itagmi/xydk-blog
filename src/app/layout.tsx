@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import SiteNav from "@/components/layout/SiteNav";
 import ChatBot from "@/components/chat/ChatBot";
+import AuthHashRedirect from "@/components/auth/AuthHashRedirect";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -68,6 +69,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[#0c0c0c]" suppressHydrationWarning>
+        <AuthHashRedirect />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
