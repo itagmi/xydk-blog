@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import MarkdownContent from "@/components/dev-note/MarkdownContent";
 import SitePageShell from "@/components/layout/SitePageShell";
 import { getPublishedUiuxPostBySlug, incrementViews } from "@/lib/posts";
+import { createClient } from "@/lib/supabase/server";
 import { Bricolage_Grotesque } from "next/font/google";
 
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"], weight: ["400", "500"] });
@@ -14,7 +15,9 @@ export default async function UiuxPostPage({ params }: { params: Promise<{ slug:
   const post = await getPublishedUiuxPostBySlug(slug);
   if (!post) notFound();
 
-  await incrementViews(slug);
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  await incrementViews(slug, !!user);
 
   return (
     <SitePageShell maxWidth="680">

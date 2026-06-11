@@ -53,7 +53,7 @@ export async function createPost(formData: FormData) {
       title,
       slug,
       content,
-      description,
+      ...(description !== undefined && { description }),
       published,
       category,
       tags: {
@@ -86,7 +86,7 @@ export async function updatePost(id: string, formData: FormData) {
     data: {
       title,
       content,
-      description,
+      ...(description !== undefined && { description }),
       published,
       tags: {
         set: [],

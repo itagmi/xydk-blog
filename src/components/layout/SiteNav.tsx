@@ -44,14 +44,14 @@ export default function SiteNav() {
 
       <nav aria-label="Main" className="pointer-events-auto fixed top-0 right-0 left-0 z-[100] flex items-center justify-between px-6 py-6 md:justify-center md:gap-12 md:px-12 md:py-10">
         {/* 홈 아이콘 */}
-        <Link href="/" aria-label="Home" className={`transition-colors duration-[250ms] md:absolute md:left-12 ${pathname === "/" ? "text-white/85" : "text-white/40 hover:text-white/85"}`}>
+        <Link href="/" prefetch={false} aria-label="Home" className={`transition-colors duration-[250ms] md:absolute md:left-12 ${pathname === "/" ? "text-white/85" : "text-white/40 hover:text-white/85"}`}>
           <HomeIcon className="h-[18px] w-[18px]" />
         </Link>
 
         {/* 데스크탑 메뉴 */}
         <div className="hidden md:flex md:items-center md:gap-12">
           {NAV_ITEMS.map(({ label, href }) => (
-            <Link key={href} href={href}
+            <Link key={href} href={href} prefetch={false}
               className={`text-[11px] font-normal uppercase tracking-[0.12em] no-underline transition-colors duration-[250ms] ${pathname === href ? "text-white/85" : "text-white/40 hover:text-white/85"}`}>
               {label}
             </Link>
@@ -75,7 +75,7 @@ export default function SiteNav() {
         <ul className="flex flex-col gap-8">
           {NAV_ITEMS.map(({ label, href }) => (
             <li key={href}>
-              <Link href={href}
+              <Link href={href} prefetch={false}
                 className={`text-3xl font-normal uppercase tracking-[0.1em] no-underline transition-colors ${pathname === href ? "text-white/90" : "text-white/30 hover:text-white/70"}`}>
                 {label}
               </Link>
