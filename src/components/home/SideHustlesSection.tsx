@@ -14,6 +14,14 @@ const bricolage = Bricolage_Grotesque({
   weight: ["400", "500"],
 });
 
+type BookPreview = {
+  title: string;
+  author: string;
+  status: string;
+  cover_image: string | null;
+  category: string | null;
+};
+
 const ITEMS = [
   {
     key: "books",
@@ -40,6 +48,61 @@ const ITEMS = [
     subtitle: "내가 솔직하게 말해줄 테니 당신은 고민 안 해도 됨",
   },
 ] as const;
+
+const STATUS_STYLES: Record<string, string> = {
+  완독완료: "bg-emerald-500/20 text-emerald-300",
+  책상위: "bg-amber-500/20 text-amber-300",
+  가방안: "bg-violet-500/20 text-violet-300",
+  책장속: "bg-white/10 text-white/50",
+};
+
+function BookGrid({ books }: { books: BookPreview[] }) {
+  const booksUrl = process.env.NEXT_PUBLIC_BOOKS_API_URL ?? "";
+  const display = books.slice(0, 4);
+
+  return (
+    <a
+      href={booksUrl || undefined}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mx-auto grid w-full max-w-[280px] grid-cols-2 gap-2 lg:w-[200px]"
+    >
+      {display.map((book, i) => (
+        <div
+          key={i}
+          className="group relative flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+        >
+          <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
+            {book.cover_image ? (
+              <Image
+                src={book.cover_image}
+                alt={book.title}
+                fill
+                sizes="70px"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-white/20 text-xs">
+                📖
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col gap-0.5 p-1.5">
+            <p className="line-clamp-2 text-[10px] font-medium leading-tight text-white/80">
+              {book.title}
+            </p>
+            <p className="truncate text-[9px] text-white/40">{book.author}</p>
+            <span
+              className={`mt-0.5 self-start rounded px-1 py-px text-[8px] leading-tight ${STATUS_STYLES[book.status] ?? "bg-white/10 text-white/40"}`}
+            >
+              {book.status}
+            </span>
+          </div>
+        </div>
+      ))}
+    </a>
+  );
+}
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -100,7 +163,11 @@ function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
   return image;
 }
 
-export default function SideHustlesSection() {
+interface Props {
+  books?: BookPreview[];
+}
+
+export default function SideHustlesSection({ books = [] }: Props) {
   const listRef = useRef<HTMLUListElement>(null);
 
   useGSAP(
@@ -196,7 +263,11 @@ export default function SideHustlesSection() {
             >
               <article className="flex flex-col items-center gap-8 lg:gap-5">
                 <p className="text-sm text-white/40">{item.label}</p>
-                <SideHustleImage item={item} />
+                {item.key === "books" && books.length > 0 ? (
+                  <BookGrid books={books} />
+                ) : (
+                  <SideHustleImage item={item} />
+                )}
                 <p className="text-base leading-relaxed uppercase tracking-[0.06em] text-white/55 md:text-[15px]">
                   {item.headline}
                 </p>
