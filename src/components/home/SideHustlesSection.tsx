@@ -59,21 +59,44 @@ const STATUS_STYLES: Record<string, string> = {
 
 function BookListIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} aria-hidden="true" className={className}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.2}
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+      />
     </svg>
   );
 }
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
     </svg>
   );
 }
 
-function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => void }) {
+function BookModal({
+  books,
+  onClose,
+}: {
+  books: BookPreview[];
+  onClose: () => void;
+}) {
   const booksUrl = process.env.NEXT_PUBLIC_BOOKS_API_URL ?? "";
   const [selected, setSelected] = useState<BookPreview | null>(null);
 
@@ -93,7 +116,10 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
   }, [onClose, selected]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-6" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-6"
+      onClick={onClose}
+    >
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
         className="relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col rounded-2xl border border-white/10 bg-[#111] shadow-2xl"
@@ -110,7 +136,9 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
               ← 목록으로
             </button>
           ) : (
-            <h3 className="text-xs font-medium tracking-widest text-white/50 uppercase">Reading List</h3>
+            <h3 className="text-xs font-medium tracking-widest text-white/50 uppercase">
+              Reading List
+            </h3>
           )}
           <button
             type="button"
@@ -130,7 +158,13 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
               <div className="mb-5 flex items-start gap-4">
                 <div className="relative h-20 w-14 flex-shrink-0 overflow-hidden rounded-lg">
                   {selected.cover_image ? (
-                    <Image src={selected.cover_image} alt={selected.title} fill sizes="56px" className="object-cover" />
+                    <Image
+                      src={selected.cover_image}
+                      alt={selected.title}
+                      fill
+                      sizes="56px"
+                      className="object-cover"
+                    />
                   ) : (
                     <div className="h-full w-full bg-white/5 flex items-center justify-center">
                       <BookListIcon className="h-5 w-5 text-white/20" />
@@ -138,9 +172,15 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
                   )}
                 </div>
                 <div>
-                  <p className="text-base font-medium text-white/85 leading-snug">{selected.title}</p>
-                  <p className="mt-0.5 text-sm text-white/40">{selected.author}</p>
-                  <span className={`mt-2 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[selected.status] ?? "bg-white/10 text-white/40"}`}>
+                  <p className="text-base font-medium text-white/85 leading-snug">
+                    {selected.title}
+                  </p>
+                  <p className="mt-0.5 text-sm text-white/40">
+                    {selected.author}
+                  </p>
+                  <span
+                    className={`mt-2 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[selected.status] ?? "bg-white/10 text-white/40"}`}
+                  >
                     {selected.status}
                   </span>
                 </div>
@@ -150,14 +190,18 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
                   {selected.review}
                 </p>
               ) : (
-                <p className="py-6 text-center text-sm text-white/25">아직 독후감이 없어요</p>
+                <p className="py-6 text-center text-sm text-white/25">
+                  아직 독후감이 없어요
+                </p>
               )}
             </div>
           ) : (
             /* 목록 뷰 */
             <ul className="divide-y divide-white/5">
               {books.length === 0 ? (
-                <li className="py-12 text-center text-sm text-white/30">등록된 책이 없어요</li>
+                <li className="py-12 text-center text-sm text-white/30">
+                  등록된 책이 없어요
+                </li>
               ) : (
                 books.slice(0, 4).map((book, i) => {
                   const isFinished = book.status === "완독완료";
@@ -171,7 +215,13 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
                       >
                         <div className="relative h-16 w-11 flex-shrink-0 overflow-hidden rounded-lg">
                           {book.cover_image ? (
-                            <Image src={book.cover_image} alt={book.title} fill sizes="44px" className="object-cover" />
+                            <Image
+                              src={book.cover_image}
+                              alt={book.title}
+                              fill
+                              sizes="44px"
+                              className="object-cover"
+                            />
                           ) : (
                             <div className="h-full w-full bg-white/5 flex items-center justify-center">
                               <BookListIcon className="h-4 w-4 text-white/20" />
@@ -179,14 +229,22 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-medium text-white/80">{book.title}</p>
-                          <p className="truncate text-xs text-white/40 mt-0.5">{book.author}</p>
-                          <span className={`mt-1.5 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[book.status] ?? "bg-white/10 text-white/40"}`}>
+                          <p className="truncate text-sm font-medium text-white/80">
+                            {book.title}
+                          </p>
+                          <p className="truncate text-xs text-white/40 mt-0.5">
+                            {book.author}
+                          </p>
+                          <span
+                            className={`mt-1.5 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[book.status] ?? "bg-white/10 text-white/40"}`}
+                          >
                             {book.status}
                           </span>
                         </div>
                         {isFinished && (
-                          <span className="text-xs text-white/25 flex-shrink-0">독후감 →</span>
+                          <span className="text-xs text-white/25 flex-shrink-0">
+                            독후감 →
+                          </span>
                         )}
                       </button>
                     </li>
@@ -206,7 +264,7 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
               rel="noopener noreferrer"
               className="block w-full rounded-xl border border-white/10 py-2.5 text-center text-xs tracking-widest text-white/40 uppercase hover:border-white/20 hover:text-white/60 transition-colors"
             >
-              전체 보기 →
+              GINKGO 바로가기 →
             </a>
           </div>
         )}
@@ -397,8 +455,8 @@ export default function SideHustlesSection({ books = [] }: Props) {
           </ul>
 
           <p className="max-w-[42ch] text-sm leading-relaxed uppercase tracking-[0.06em] text-white/35 md:text-base">
-            technically not side hustles, but they do take up side-hustle amounts
-            of brain space.
+            technically not side hustles, but they do take up side-hustle
+            amounts of brain space.
           </p>
         </div>
       </div>
