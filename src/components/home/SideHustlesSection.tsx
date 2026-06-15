@@ -20,6 +20,7 @@ type BookPreview = {
   status: string;
   cover_image: string | null;
   category: string | null;
+  review?: string | null;
 };
 
 const ITEMS = [
@@ -74,29 +75,43 @@ function InstagramIcon({ className }: { className?: string }) {
 
 function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => void }) {
   const booksUrl = process.env.NEXT_PUBLIC_BOOKS_API_URL ?? "";
+  const [selected, setSelected] = useState<BookPreview | null>(null);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (selected) setSelected(null);
+        else onClose();
+      }
+    };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [onClose]);
+  }, [onClose, selected]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
-        className="relative z-10 w-full max-w-sm rounded-2xl border border-white/10 bg-[#111] p-6 shadow-2xl"
+        className="relative z-10 w-full max-w-lg rounded-2xl border border-white/10 bg-[#111] shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-5 flex items-center justify-between">
-          <h3 className="text-sm font-medium tracking-widest text-white/60 uppercase">Reading List</h3>
+        {/* 헤더 */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-white/8">
+          {selected ? (
+            <button
+              type="button"
+              onClick={() => setSelected(null)}
+              className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition-colors"
+            >
+              ← 목록으로
+            </button>
+          ) : (
+            <h3 className="text-xs font-medium tracking-widest text-white/50 uppercase">Reading List</h3>
+          )}
           <button
             type="button"
             onClick={onClose}
@@ -107,42 +122,93 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
           </button>
         </div>
 
-        {books.length === 0 ? (
-          <p className="py-8 text-center text-sm text-white/30">등록된 책이 없어요</p>
-        ) : (
-          <ul className="space-y-3">
-            {books.slice(0, 4).map((book, i) => (
-              <li key={i} className="flex items-center gap-3">
-                <div className="relative h-14 w-10 flex-shrink-0 overflow-hidden rounded">
-                  {book.cover_image ? (
-                    <Image src={book.cover_image} alt={book.title} fill sizes="40px" className="object-cover" />
+        {/* 컨텐츠 */}
+        <div className="max-h-[70vh] overflow-y-auto">
+          {selected ? (
+            /* 독후감 뷰 */
+            <div className="p-6">
+              <div className="mb-5 flex items-start gap-4">
+                <div className="relative h-20 w-14 flex-shrink-0 overflow-hidden rounded-lg">
+                  {selected.cover_image ? (
+                    <Image src={selected.cover_image} alt={selected.title} fill sizes="56px" className="object-cover" />
                   ) : (
                     <div className="h-full w-full bg-white/5 flex items-center justify-center">
-                      <BookListIcon className="h-4 w-4 text-white/20" />
+                      <BookListIcon className="h-5 w-5 text-white/20" />
                     </div>
                   )}
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-white/80">{book.title}</p>
-                  <p className="truncate text-xs text-white/40">{book.author}</p>
-                  <span className={`mt-1 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[book.status] ?? "bg-white/10 text-white/40"}`}>
-                    {book.status}
+                <div>
+                  <p className="text-base font-medium text-white/85 leading-snug">{selected.title}</p>
+                  <p className="mt-0.5 text-sm text-white/40">{selected.author}</p>
+                  <span className={`mt-2 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[selected.status] ?? "bg-white/10 text-white/40"}`}>
+                    {selected.status}
                   </span>
                 </div>
-              </li>
-            ))}
-          </ul>
-        )}
+              </div>
+              {selected.review ? (
+                <p className="text-sm leading-relaxed text-white/60 whitespace-pre-line">
+                  {selected.review}
+                </p>
+              ) : (
+                <p className="py-6 text-center text-sm text-white/25">아직 독후감이 없어요</p>
+              )}
+            </div>
+          ) : (
+            /* 목록 뷰 */
+            <ul className="divide-y divide-white/5">
+              {books.length === 0 ? (
+                <li className="py-12 text-center text-sm text-white/30">등록된 책이 없어요</li>
+              ) : (
+                books.slice(0, 4).map((book, i) => {
+                  const isFinished = book.status === "완독완료";
+                  return (
+                    <li key={i}>
+                      <button
+                        type="button"
+                        disabled={!isFinished}
+                        onClick={() => isFinished && setSelected(book)}
+                        className={`flex w-full items-center gap-4 px-6 py-4 text-left transition-colors ${isFinished ? "hover:bg-white/5 cursor-pointer" : "cursor-default"}`}
+                      >
+                        <div className="relative h-16 w-11 flex-shrink-0 overflow-hidden rounded-lg">
+                          {book.cover_image ? (
+                            <Image src={book.cover_image} alt={book.title} fill sizes="44px" className="object-cover" />
+                          ) : (
+                            <div className="h-full w-full bg-white/5 flex items-center justify-center">
+                              <BookListIcon className="h-4 w-4 text-white/20" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium text-white/80">{book.title}</p>
+                          <p className="truncate text-xs text-white/40 mt-0.5">{book.author}</p>
+                          <span className={`mt-1.5 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[book.status] ?? "bg-white/10 text-white/40"}`}>
+                            {book.status}
+                          </span>
+                        </div>
+                        {isFinished && (
+                          <span className="text-xs text-white/25 flex-shrink-0">독후감 →</span>
+                        )}
+                      </button>
+                    </li>
+                  );
+                })
+              )}
+            </ul>
+          )}
+        </div>
 
-        {booksUrl && (
-          <a
-            href={booksUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 block w-full rounded-xl border border-white/10 py-2.5 text-center text-xs tracking-widest text-white/40 uppercase hover:border-white/20 hover:text-white/60 transition-colors"
-          >
-            전체 보기 →
-          </a>
+        {/* 푸터 */}
+        {!selected && booksUrl && (
+          <div className="px-6 py-4 border-t border-white/8">
+            <a
+              href={booksUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full rounded-xl border border-white/10 py-2.5 text-center text-xs tracking-widest text-white/40 uppercase hover:border-white/20 hover:text-white/60 transition-colors"
+            >
+              전체 보기 →
+            </a>
+          </div>
         )}
       </div>
     </div>
