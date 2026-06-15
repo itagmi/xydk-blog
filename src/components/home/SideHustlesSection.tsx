@@ -138,7 +138,7 @@ function BookModal({
             </button>
           ) : (
             <h3 className="text-xs font-medium tracking-widest text-white/50 uppercase">
-              Reading List
+              {new Date().getFullYear()} Reading List
             </h3>
           )}
           <button
