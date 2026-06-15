@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Bricolage_Grotesque } from "next/font/google";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -56,95 +56,145 @@ const STATUS_STYLES: Record<string, string> = {
   책장속: "bg-white/10 text-white/50",
 };
 
-function BookGrid({ books }: { books: BookPreview[] }) {
-  const booksUrl = process.env.NEXT_PUBLIC_BOOKS_API_URL ?? "";
-  const display = books.slice(0, 4);
-
+function BookListIcon({ className }: { className?: string }) {
   return (
-    <a
-      href={booksUrl || undefined}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mx-auto grid w-full max-w-[280px] grid-cols-2 gap-2 lg:w-[200px]"
-    >
-      {display.map((book, i) => (
-        <div
-          key={i}
-          className="group relative flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
-        >
-          <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
-            {book.cover_image ? (
-              <Image
-                src={book.cover_image}
-                alt={book.title}
-                fill
-                sizes="70px"
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center text-white/20 text-xs">
-                📖
-              </div>
-            )}
-          </div>
-          <div className="flex flex-col gap-0.5 p-1.5">
-            <p className="line-clamp-2 text-[10px] font-medium leading-tight text-white/80">
-              {book.title}
-            </p>
-            <p className="truncate text-[9px] text-white/40">{book.author}</p>
-            <span
-              className={`mt-0.5 self-start rounded px-1 py-px text-[8px] leading-tight ${STATUS_STYLES[book.status] ?? "bg-white/10 text-white/40"}`}
-            >
-              {book.status}
-            </span>
-          </div>
-        </div>
-      ))}
-    </a>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} aria-hidden="true" className={className}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+    </svg>
   );
 }
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className={className}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
     </svg>
   );
 }
 
-function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
-  const image = (
+function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => void }) {
+  const booksUrl = process.env.NEXT_PUBLIC_BOOKS_API_URL ?? "";
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div
+        className="relative z-10 w-full max-w-sm rounded-2xl border border-white/10 bg-[#111] p-6 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-5 flex items-center justify-between">
+          <h3 className="text-sm font-medium tracking-widest text-white/60 uppercase">Reading List</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-white/30 hover:text-white/60 transition-colors text-xl leading-none"
+            aria-label="닫기"
+          >
+            ×
+          </button>
+        </div>
+
+        {books.length === 0 ? (
+          <p className="py-8 text-center text-sm text-white/30">등록된 책이 없어요</p>
+        ) : (
+          <ul className="space-y-3">
+            {books.slice(0, 4).map((book, i) => (
+              <li key={i} className="flex items-center gap-3">
+                <div className="relative h-14 w-10 flex-shrink-0 overflow-hidden rounded">
+                  {book.cover_image ? (
+                    <Image src={book.cover_image} alt={book.title} fill sizes="40px" className="object-cover" />
+                  ) : (
+                    <div className="h-full w-full bg-white/5 flex items-center justify-center">
+                      <BookListIcon className="h-4 w-4 text-white/20" />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-white/80">{book.title}</p>
+                  <p className="truncate text-xs text-white/40">{book.author}</p>
+                  <span className={`mt-1 inline-block rounded px-1.5 py-px text-[10px] ${STATUS_STYLES[book.status] ?? "bg-white/10 text-white/40"}`}>
+                    {book.status}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {booksUrl && (
+          <a
+            href={booksUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 block w-full rounded-xl border border-white/10 py-2.5 text-center text-xs tracking-widest text-white/40 uppercase hover:border-white/20 hover:text-white/60 transition-colors"
+          >
+            전체 보기 →
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SideHustleImage({
+  item,
+  onBooksClick,
+}: {
+  item: (typeof ITEMS)[number];
+  onBooksClick?: () => void;
+}) {
+  const inner = (
     <div className="relative mx-auto h-[240px] w-full max-w-[280px] overflow-hidden lg:h-[200px] lg:w-[200px]">
       <Image
         src={item.image}
         alt={item.label}
         fill
         sizes="(max-width: 1024px) 80vw, 200px"
-        data-side-hustle-image={item.href ? "" : undefined}
-        className={`object-cover ${item.href ? "lg:transition-transform lg:duration-500 lg:ease-out lg:group-hover:scale-105" : ""}`}
+        data-side-hustle-image=""
+        className="object-cover lg:transition-transform lg:duration-500 lg:ease-out lg:group-hover:scale-105"
       />
-      {item.href && (
-        <>
-          <div
-            data-side-hustle-overlay
-            className="absolute inset-0 bg-black/50 opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100"
-          />
-          <div
-            data-side-hustle-icon
-            className="absolute inset-0 flex items-center justify-center opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100"
-          >
-            <InstagramIcon className="h-14 w-14 text-white" />
-          </div>
-        </>
-      )}
+      <div
+        data-side-hustle-overlay
+        className="absolute inset-0 bg-black/50 opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100"
+      />
+      <div
+        data-side-hustle-icon
+        className="absolute inset-0 flex items-center justify-center opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100"
+      >
+        {item.key === "books" ? (
+          <BookListIcon className="h-14 w-14 text-white" />
+        ) : (
+          <InstagramIcon className="h-14 w-14 text-white" />
+        )}
+      </div>
     </div>
   );
+
+  if (item.key === "books") {
+    return (
+      <button
+        type="button"
+        onClick={onBooksClick}
+        data-side-hustle-link
+        className="group mx-auto block w-full max-w-[280px] cursor-pointer lg:w-[200px]"
+      >
+        {inner}
+      </button>
+    );
+  }
 
   if (item.href) {
     return (
@@ -155,12 +205,12 @@ function SideHustleImage({ item }: { item: (typeof ITEMS)[number] }) {
         data-side-hustle-link
         className="group mx-auto block w-full max-w-[280px] lg:w-[200px]"
       >
-        {image}
+        {inner}
       </a>
     );
   }
 
-  return image;
+  return inner;
 }
 
 interface Props {
@@ -169,6 +219,7 @@ interface Props {
 
 export default function SideHustlesSection({ books = [] }: Props) {
   const listRef = useRef<HTMLUListElement>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useGSAP(
     () => {
@@ -242,48 +293,53 @@ export default function SideHustlesSection({ books = [] }: Props) {
   );
 
   return (
-    <div className="flex w-full max-w-[1200px] flex-col gap-20 lg:gap-16 xl:gap-20">
-      <header className="w-full max-lg:pb-4">
-        <h2
-          className={`${bricolage.className} text-right text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-[1.08] tracking-[-0.02em] text-white/90`}
-        >
-          the side hustles
-        </h2>
-      </header>
+    <>
+      <div className="flex w-full max-w-[1200px] flex-col gap-20 lg:gap-16 xl:gap-20">
+        <header className="w-full max-lg:pb-4">
+          <h2
+            className={`${bricolage.className} text-right text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-[1.08] tracking-[-0.02em] text-white/90`}
+          >
+            the side hustles
+          </h2>
+        </header>
 
-      <div className="flex w-full flex-col items-center gap-20 text-center lg:gap-14">
-        <ul
-          ref={listRef}
-          className="flex w-full flex-col items-center gap-40 py-12 lg:flex-row lg:items-start lg:justify-center lg:gap-10 lg:py-0"
-        >
-          {ITEMS.map((item) => (
-            <li
-              key={item.key}
-              className="w-full max-w-[360px] lg:w-[34ch] lg:shrink-0"
-            >
-              <article className="flex flex-col items-center gap-8 lg:gap-5">
-                <p className="text-sm text-white/40">{item.label}</p>
-                {item.key === "books" && books.length > 0 ? (
-                  <BookGrid books={books} />
-                ) : (
-                  <SideHustleImage item={item} />
-                )}
-                <p className="text-base leading-relaxed uppercase tracking-[0.06em] text-white/55 md:text-[15px]">
-                  {item.headline}
-                </p>
-                <p className="text-sm leading-relaxed text-white/35">
-                  {item.subtitle}
-                </p>
-              </article>
-            </li>
-          ))}
-        </ul>
+        <div className="flex w-full flex-col items-center gap-20 text-center lg:gap-14">
+          <ul
+            ref={listRef}
+            className="flex w-full flex-col items-center gap-40 py-12 lg:flex-row lg:items-start lg:justify-center lg:gap-10 lg:py-0"
+          >
+            {ITEMS.map((item) => (
+              <li
+                key={item.key}
+                className="w-full max-w-[360px] lg:w-[34ch] lg:shrink-0"
+              >
+                <article className="flex flex-col items-center gap-8 lg:gap-5">
+                  <p className="text-sm text-white/40">{item.label}</p>
+                  <SideHustleImage
+                    item={item}
+                    onBooksClick={() => setModalOpen(true)}
+                  />
+                  <p className="text-base leading-relaxed uppercase tracking-[0.06em] text-white/55 md:text-[15px]">
+                    {item.headline}
+                  </p>
+                  <p className="text-sm leading-relaxed text-white/35">
+                    {item.subtitle}
+                  </p>
+                </article>
+              </li>
+            ))}
+          </ul>
 
-        <p className="max-w-[42ch] text-sm leading-relaxed uppercase tracking-[0.06em] text-white/35 md:text-base">
-          technically not side hustles, but they do take up side-hustle amounts
-          of brain space.
-        </p>
+          <p className="max-w-[42ch] text-sm leading-relaxed uppercase tracking-[0.06em] text-white/35 md:text-base">
+            technically not side hustles, but they do take up side-hustle amounts
+            of brain space.
+          </p>
+        </div>
       </div>
-    </div>
+
+      {modalOpen && (
+        <BookModal books={books} onClose={() => setModalOpen(false)} />
+      )}
+    </>
   );
 }
