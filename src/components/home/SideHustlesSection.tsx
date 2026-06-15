@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Bricolage_Grotesque } from "next/font/google";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -115,7 +116,7 @@ function BookModal({
     };
   }, [onClose, selected]);
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-6"
       onClick={onClose}
@@ -269,7 +270,8 @@ function BookModal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
