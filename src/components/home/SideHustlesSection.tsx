@@ -93,10 +93,10 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
   }, [onClose, selected]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
-        className="relative z-10 w-full max-w-lg rounded-2xl border border-white/10 bg-[#111] shadow-2xl overflow-hidden"
+        className="relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col rounded-2xl border border-white/10 bg-[#111] shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 헤더 */}
@@ -123,7 +123,7 @@ function BookModal({ books, onClose }: { books: BookPreview[]; onClose: () => vo
         </div>
 
         {/* 컨텐츠 */}
-        <div className="max-h-[70vh] overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
           {selected ? (
             /* 독후감 뷰 */
             <div className="p-6">
