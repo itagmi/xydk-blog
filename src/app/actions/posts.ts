@@ -99,7 +99,6 @@ export async function updatePost(id: string, formData: FormData) {
   });
 
   revalidatePath(categoryBasePath(post.category));
-  revalidatePath(`${categoryBasePath(post.category)}/${post.slug}`);
   redirect(adminRedirectPath(post.category));
 }
 
@@ -107,7 +106,6 @@ export async function deletePost(id: string) {
   await requireAuth();
   const post = await prisma.post.delete({ where: { id } });
   revalidatePath(categoryBasePath(post.category));
-  revalidatePath(`${categoryBasePath(post.category)}/${post.slug}`);
 }
 
 export async function togglePublish(id: string, published: boolean) {
