@@ -1,9 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { Bricolage_Grotesque } from "next/font/google";
 import MarkdownContent from "./MarkdownContent";
 import { Button } from "@/components/ui/Button";
+
+function SubmitButton({ label }: { label: string }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" variant="primary" disabled={pending}>
+      {pending ? "Saving..." : label}
+    </Button>
+  );
+}
 
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"], weight: ["400", "500"] });
 
@@ -171,9 +181,7 @@ export default function PostEditor({ action, defaultValues = {}, submitLabel = "
           <input type="hidden" name="published" value={String(published)} />
         </label>
 
-        <Button type="submit" variant="primary">
-          {submitLabel}
-        </Button>
+        <SubmitButton label={submitLabel} />
       </div>
     </form>
   );
