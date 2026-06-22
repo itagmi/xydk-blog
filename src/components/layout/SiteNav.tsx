@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NAV_ITEMS } from "@/config/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { isAdminUser } from "@/lib/auth/admin";
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -20,6 +22,29 @@ export default function SiteNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showAdminLink, setShowAdminLink] = useState(false);
+  const onAdminPage = pathname.startsWith("/admin");
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    const syncAdminLink = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setShowAdminLink(isAdminUser(user?.email));
+    };
+
+    void syncAdminLink();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setShowAdminLink(isAdminUser(session?.user?.email));
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -58,6 +83,16 @@ export default function SiteNav() {
           ))}
         </div>
 
+        {showAdminLink && !onAdminPage && (
+          <Link
+            href="/admin"
+            prefetch={false}
+            className="hidden text-[11px] font-normal uppercase tracking-[0.12em] text-white/40 no-underline transition-colors duration-[250ms] hover:text-white/85 md:absolute md:right-12 md:block"
+          >
+            Admin
+          </Link>
+        )}
+
         {/* 햄버거 버튼 (모바일) */}
         <button
           onClick={() => setOpen(!open)}
@@ -81,6 +116,17 @@ export default function SiteNav() {
               </Link>
             </li>
           ))}
+          {showAdminLink && !onAdminPage && (
+            <li>
+              <Link
+                href="/admin"
+                prefetch={false}
+                className="text-3xl font-normal uppercase tracking-[0.1em] text-white/30 no-underline transition-colors hover:text-white/70"
+              >
+                Admin
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </>

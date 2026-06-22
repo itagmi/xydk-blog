@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { logout } from "@/app/actions/auth";
 import { deletePost, togglePublish } from "@/app/actions/posts";
 import AdminPageShell from "@/components/admin/AdminPageShell";
+import AdminPostTitleLink from "@/components/admin/AdminPostTitleLink";
 import Pagination from "@/components/ui/Pagination";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { getPaginationMeta, parsePage } from "@/lib/pagination";
@@ -60,7 +61,9 @@ export default async function AdminPage({
                   >
                     {post.published ? "Live" : "Draft"}
                   </span>
-                  <span className="truncate text-sm text-white/75">{post.title}</span>
+                  <AdminPostTitleLink href={`/admin/posts/${post.id}`}>
+                    {post.title}
+                  </AdminPostTitleLink>
                   <span className="shrink-0 text-[10px] text-white/20">{post.views} views</span>
                 </div>
                 {post.tags.length > 0 && (
